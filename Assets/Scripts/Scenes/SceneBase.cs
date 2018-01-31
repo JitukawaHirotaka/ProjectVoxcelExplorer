@@ -1,24 +1,11 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Collections;
 
 /// <summary>
 /// シーン基底クラス
 /// </summary>
-public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>
+public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>, IRootScene
 {
-	/// <summary>
-	/// メインシーンの種類
-	/// </summary>
-	public enum SceneType : byte
-	{
-		None = 0,
-		Title,
-		InGame,
-		Max
-	}
-
 	/// <summary>
 	/// このオブジェクトが存在するシーン
 	/// </summary>
@@ -36,45 +23,23 @@ public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>
 	}
 
 	/// <summary>
-	/// メインシーンタイプとシーンの紐付けマップ
-	/// </summary>
-	protected static readonly Dictionary<SceneType, string> SCENE_MAP = 
-		new Dictionary<SceneType, string>
-	{
-		{ SceneType.Title, "Title" },
-		{ SceneType.InGame, "InGame" },
-	};
-
-	/// <summary>
-	/// シーン遷移中かどうか
-	/// </summary>
-	protected bool duringTransScene = false;
-
-	/// <summary>
-	/// シーン切り替え
-	/// </summary>
-	public virtual void Switch(SceneType nextScene)
-	{
-		if (duringTransScene)
-			return;
-
-		StartCoroutine(SwitchAsync(nextScene));
-	}
-
-	/// <summary>
 	/// 派生クラスのインスタンスを取得
 	/// </summary>
 	protected abstract T GetOverrideInstance();
 
 	/// <summary>
-	/// 非同期シーン切り替え
+	/// 画面遷移開始時実行イベント
 	/// </summary>
-	protected IEnumerator SwitchAsync(SceneType nextScene)
+	protected virtual void OnSwitchBegin()
 	{
-		duringTransScene = true;
 
-		yield return null;
+	}
 
-		SceneManager.LoadSceneAsync(SCENE_MAP[nextScene], LoadSceneMode.Single);
+	/// <summary>
+	/// 画面遷移終了時実行イベント
+	/// </summary>
+	protected virtual void OnSwitchEnd()
+	{
+
 	}
 }
