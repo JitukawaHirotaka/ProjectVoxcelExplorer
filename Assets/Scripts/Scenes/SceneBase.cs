@@ -4,7 +4,7 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// シーン基底クラス
 /// </summary>
-public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>, IRootScene
+public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>
 {
 	/// <summary>
 	/// このオブジェクトが存在するシーン
@@ -26,20 +26,4 @@ public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>, IRoot
 	/// 派生クラスのインスタンスを取得
 	/// </summary>
 	protected abstract T GetOverrideInstance();
-
-	/// <summary>
-	/// 画面遷移開始時実行イベント
-	/// </summary>
-	protected virtual void OnSwitchBegin()
-	{
-
-	}
-
-	/// <summary>
-	/// 画面遷移終了時実行イベント
-	/// </summary>
-	protected virtual void OnSwitchEnd()
-	{
-
-	}
 }
