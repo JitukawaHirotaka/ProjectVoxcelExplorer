@@ -15,9 +15,14 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 	{
 		None = 0,
 		Title,
-		InGame,
-		Max
+		InGame
 	}
+
+	/// <summary>
+	/// 現在表示しているルートシーン
+	/// </summary>
+	[SerializeField]
+	private SceneType _currentViewScene;
 
 	/// <summary>
 	/// メインシーンタイプとシーンの紐付けマップ
@@ -44,7 +49,14 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		// フェード終了まで待機
 		yield return null;
 
-		SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Single);
+		AsyncOperation ao = SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Single);
+
+		// 読み込みが完了するまで待機
+		while (ao.progress < 0.9f)
+			yield return null;
+
+		_currentViewScene = nextScene;
+		duringTransScene = false;
 	}
 
 	/// <summary>
@@ -52,9 +64,24 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 	/// </summary>
 	public static void Switch(SceneType nextScene)
 	{
+		if (nextScene == SceneType.None)
+			return;
+
 		if (Instance.duringTransScene)
 			return;
 
 		Instance.StartCoroutine(Instance.SwitchAsync(nextScene));
+	}
+
+	private void OnValidate()
+	{
+		Switch(_currentViewScene);
+	}
+
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnEntryPoint()
+	{
+		var go = new GameObject(nameof(SceneRootManager));
+		go.AddComponent<SceneRootManager>();
 	}
 }
