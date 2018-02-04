@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System;
 using System.Collections;
+using AlstroemeriaUtility;
 
 /// <summary>
 /// ディスプレイ管理クラス
@@ -235,13 +236,8 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 	{
 		// ルートオブジェクト取得
 		GameObject[] goList = scene.GetRootGameObjects();
-		//TODO:IsNullOrEmpty作成
-		//プロジェクト結合時にUtilityクラスにコレクション型のIsNullOrEmptyメソッドを拡張メソッド形式で作成する
-		if (goList == null)
-		{
-			yield break;
-		}
-		if (goList.Length == 0)
+
+		if (goList.IsNullOrEmpty())
 		{
 			yield break;
 		}
