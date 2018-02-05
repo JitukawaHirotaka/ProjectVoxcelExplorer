@@ -3,5 +3,11 @@
 /// </summary>
 public interface ISceneCache
 {
-
+	/// <summary>
+	/// このクラスに紐づいているルートシーン
+	/// </summary>
+	SceneRootManager.SceneType RootSceneType
+	{
+		get;
+	}
 }
