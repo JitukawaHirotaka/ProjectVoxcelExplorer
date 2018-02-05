@@ -59,7 +59,7 @@ namespace AlstroemeriaUtility
 		/// <summary>
 		/// 配列のfor文を簡潔に記述するための拡張メソッド
 		/// </summary>
-		public static void Foreach<T>(this T[] array, Action<T> action)
+		public static void ForEach<T>(this T[] array, Action<T> action)
 		{
 			foreach(T t in array)
 			{
