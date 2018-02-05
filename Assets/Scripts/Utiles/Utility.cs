@@ -52,6 +52,19 @@ namespace AlstroemeriaUtility
 				.Select((v, i) => new { Value = v, Index = i })
 				.First(e => e.Value.Equals(element.Select(s => s).Min())).Index;
 		}
+
+		/// <summary>
+		/// カウンタ付きForEach
+		/// </summary>
+		public static void ForEach<T>(this IEnumerable<T> array, Action<T, int> action)
+		{
+			int counter = 0;
+			foreach (T t in array)
+			{
+				action?.Invoke(t, counter);
+				counter++;
+			}
+		}
 	}
 
 	public static class ArrayExtensions
@@ -64,6 +77,19 @@ namespace AlstroemeriaUtility
 			foreach(T t in array)
 			{
 				action?.Invoke(t);
+			}
+		}
+
+		/// <summary>
+		/// 配列版カウンタ付きForEach
+		/// </summary>
+		public static void ForEach<T>(this T[] array, Action<T,int> action)
+		{
+			int counter = 0;
+			foreach (T t in array)
+			{
+				action?.Invoke(t, counter);
+				counter++;
 			}
 		}
 
