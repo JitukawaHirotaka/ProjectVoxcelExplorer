@@ -93,9 +93,9 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 	/// <summary>
 	/// シーン開始時実行イベント
 	/// </summary>
-	public static void OnSceneStart<T>(SceneBase<T> sceneBase) where T : SceneBase<T>
+	public static void OnSceneStart(ISceneCache sceneBase)
 	{
-		Instance._currentSceneCache = sceneBase.SceneCache;
+		Instance._currentSceneCache = sceneBase;
 	}
 
 	/// <summary>

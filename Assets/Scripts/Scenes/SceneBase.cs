@@ -15,14 +15,6 @@ public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>
 	}
 
 	/// <summary>
-	/// 外部シーンが利用できるデータキャッシュ
-	/// </summary>
-	public abstract ISceneCache SceneCache
-	{
-		get;
-	}
-
-	/// <summary>
 	/// 派生クラスのインスタンスを取得
 	/// </summary>
 	protected abstract T GetOverrideInstance();
