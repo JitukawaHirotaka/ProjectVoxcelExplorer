@@ -21,6 +21,8 @@ public class DisplayDebugger : MonoBehaviour
 	/// <summary>
 	/// 引き渡し用シーンキャッシュ
 	/// </summary>
+	//TODO: SerializeFieldの拡張
+	//SerializeFieldを拡張してインターフェイスをインスペクタに表示できるようにしたい
 	[SerializeField]
 	private SceneCacheBase _sceneCache;
 

@@ -3,6 +3,7 @@
 /// <summary>
 /// デバッグ用ディスプレイイベント呼び出しクラス
 /// </summary>
+//TODO:リフレクションを用いて、継承無しで呼び出せるようにする
 public abstract class DisplayDebugEventBase : MonoBehaviour 
 {
 	/// <summary>
