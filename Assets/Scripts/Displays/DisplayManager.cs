@@ -43,12 +43,7 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 		/// ディスプレイなし
 		/// </summary>
 		None,
-		Title,
-		Lobby,
-		Battle,
-		Move,
-		Dance,
-		Result
+		Title
 	}
 
 	/// <summary>
@@ -68,11 +63,7 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 		new Dictionary<DisplayType, string>
 	{
 		{ DisplayType.None, "None" },
-		{ DisplayType.Title, "TitleDisplay" },
-		{ DisplayType.Lobby, "LobbyDisplay" },
-		{ DisplayType.Move, "MoveDisplay" },
-		{ DisplayType.Dance, "DanceDisplay" },
-		{ DisplayType.Result, "ResultDisplay" }
+		{ DisplayType.Title, "TitleDisplay" }
 	};
 
 	/// <summary>
@@ -242,24 +233,25 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 			yield break;
 		}
 
-		DisplayBase display;
+		IDisplay display;
 
 		// ディスプレイオブジェクト取得処理
 		foreach (var go in goList)
 		{
-			display = go.GetComponentInChildren<DisplayBase>();
+			display = go.GetComponentInChildren<IDisplay>();
 
 			// displayを含んでいる場合(goがCanvas)
 			if (display != null)
 			{
 				// ディスプレイオブジェクトの取得
 				Instance._currentdisplay = display;
-				display.gameObject.SetActive(false);
+				display.GameObject.SetActive(false);
+				Transform parent = display.GameObject.transform;
 
 				// Canvas内のディスプレイオブジェクト以外の消去
 				foreach (Transform child in go.transform)
 				{
-					if (child != display.transform)
+					if (child != parent)
 					{
 						Destroy(child.gameObject);
 					}
