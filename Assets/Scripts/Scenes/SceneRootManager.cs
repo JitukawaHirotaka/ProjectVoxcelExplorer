@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using AlstroemeriaUtility;
 
 /// <summary>
 /// ルート(メイン)シーンを管理するクラス
@@ -46,6 +47,12 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 	{
 		duringTransScene = true;
 
+		DisplayManager.OnSceneEnd();
+
+		// ディスプレイ解放待ち
+		while (DisplayManager.IsSwitching)
+			yield return null;
+
 		// フェード終了まで待機
 		yield return null;
 
@@ -54,6 +61,14 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		// 読み込みが完了するまで待機
 		while (ao.progress < 0.9f)
 			yield return null;
+
+		yield return StartCoroutine(FindRootScene(SceneManager.GetSceneByName(ROOT_SCENE_MAP[nextScene])));
+
+		// シーン情報を渡す
+		DisplayManager.OnSceneStart(_currentRootScene.SceneCache);
+
+		// ディスプレイの表示
+		DisplayManager.Switch(_currentRootScene.FirstUsingDisplay);
 
 		_currentViewScene = nextScene;
 		duringTransScene = false;
@@ -73,6 +88,8 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		Instance.StartCoroutine(Instance.SwitchAsync(nextScene));
 	}
 
+	private IRootScene _currentRootScene;
+
 	private void OnValidate()
 	{
 		Switch(_currentViewScene);
@@ -84,4 +101,31 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		var go = new GameObject(nameof(SceneRootManager));
 		go.AddComponent<SceneRootManager>();
 	}
+
+	private IEnumerator FindRootScene(Scene scene)
+	{
+		// ルートオブジェクト取得
+		GameObject[] goList = scene.GetRootGameObjects();
+
+		if (goList.IsNullOrEmpty())
+		{
+			yield break;
+		}
+
+		IRootScene root;
+
+		foreach (var go in goList)
+		{
+			root = go.GetComponent<IRootScene>();
+
+			if (root == null)
+				continue;
+
+			_currentRootScene = root;
+			yield break;
+		}
+
+		Debug.LogError("ルートシーンが取得できませんでした");
+	}
 }
+
