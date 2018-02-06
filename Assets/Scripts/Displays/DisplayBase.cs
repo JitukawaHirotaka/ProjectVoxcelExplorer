@@ -24,7 +24,15 @@ public abstract class DisplayBase : MonoBehaviour, IDisplay
 	{
 		get;
 	}
-		
+
+	/// <summary>
+	/// ゲームオブジェクト
+	/// </summary>
+	public GameObject GameObject
+	{
+		get { return gameObject; }
+	}
+
 	/// <summary>
 	/// ディスプレイ切り替えアニメーションが再生中かどうか
 	/// </summary>

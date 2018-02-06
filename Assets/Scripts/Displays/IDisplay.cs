@@ -16,6 +16,11 @@ public interface IDisplay
 	IEvents DisplayEvents { get; }
 
 	/// <summary>
+	/// ゲームオブジェクト
+	/// </summary>
+	UnityEngine.GameObject GameObject { get; }
+
+	/// <summary>
 	/// ディスプレイ生成時に呼ばれるイベント
 	/// </summary>
 	void OnAwake(ISceneCache cache);
