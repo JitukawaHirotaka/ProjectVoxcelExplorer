@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using AlstroemeriaUtility;
 
 /// <summary>
 /// ディスプレイ単体駆動補助クラス
@@ -50,16 +51,14 @@ public class DisplayDebugger : MonoBehaviour
 
 	private void OnGUI()
 	{
-		int counter = 0;
-		_debugEvents?.DebugEvents.eventList.ForEach(e => 
+		_debugEvents?.DebugEvents.eventList.ForEach((e, c) => 
 		{
 			// イベント実行用ボタンUI表示
-			if (GUI.Button(new Rect(new Vector2(0, counter * 20), new Vector2(300, 20)), e.name))
+			if (GUI.Button(new Rect(new Vector2(0, c * 20), new Vector2(300, 20)), e.name))
 			{
 				// イベント実行
 				e.displayEvent?.Invoke();
 			}
-			counter++;
 		});
 	}
 
