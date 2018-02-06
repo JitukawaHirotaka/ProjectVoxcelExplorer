@@ -265,4 +265,11 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 		}
 		yield return null;
 	}
+
+	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+	private static void OnEntryPoint()
+	{
+		var go = new GameObject(nameof(DisplayManager));
+		go.AddComponent<DisplayManager>();
+	}
 }
