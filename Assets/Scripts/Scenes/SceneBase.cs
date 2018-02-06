@@ -18,4 +18,10 @@ public abstract class SceneBase<T> : MonoBehaviour where T : SceneBase<T>
 	/// 派生クラスのインスタンスを取得
 	/// </summary>
 	protected abstract T GetOverrideInstance();
+
+	/// <summary>
+	/// シーン生成時に最初に表示されるディスプレイ
+	/// </summary>
+	[SerializeField]
+	protected DisplayManager.DisplayType firstUsingDisplay;
 }
