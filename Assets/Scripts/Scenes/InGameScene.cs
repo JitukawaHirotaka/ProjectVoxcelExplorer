@@ -7,7 +7,7 @@ public class InGameScene : SceneBase<InGameScene>, IRootScene
 {
 	public ISceneCache SceneCache
 	{
-		get { return null; }
+		get { return _cache; }
 	}
 
 	public DisplayManager.DisplayType FirstUsingDisplay
