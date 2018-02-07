@@ -59,7 +59,7 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		AsyncOperation ao = SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Single);
 
 		// 読み込みが完了するまで待機
-		while (ao.progress < 0.9f)
+		while (!ao.isDone)
 			yield return null;
 
 		yield return StartCoroutine(FindRootScene(SceneManager.GetSceneByName(ROOT_SCENE_MAP[nextScene])));
