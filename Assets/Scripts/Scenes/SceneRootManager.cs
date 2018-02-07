@@ -53,8 +53,18 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		while (DisplayManager.IsSwitching)
 			yield return null;
 
+		//TODO:シーン遷移中間処理の追加
+
 		// フェード終了まで待機
 		yield return null;
+
+		// ローディングディスプレイの表示
+
+		//AsyncOperation unLoad = SceneManager.UnloadSceneAsync(ROOT_SCENE_MAP[_currentViewScene]);
+
+		// 解放が完了するまで待機
+		//while (!unLoad.isDone)
+		//	yield return null;
 
 		AsyncOperation load = SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Single);
 
@@ -66,6 +76,8 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 
 		// ルートシーンクラスの取得
 		yield return StartCoroutine(FindRootScene(next));
+
+		// ローディングディスプレイを非表示に
 
 		// シーン情報を渡す
 		DisplayManager.OnSceneStart(_currentRootScene.SceneCache);
