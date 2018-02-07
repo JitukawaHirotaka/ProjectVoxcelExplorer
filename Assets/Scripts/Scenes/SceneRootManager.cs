@@ -62,7 +62,10 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		while (!ao.isDone)
 			yield return null;
 
-		yield return StartCoroutine(FindRootScene(SceneManager.GetSceneByName(ROOT_SCENE_MAP[nextScene])));
+		Scene next = SceneManager.GetSceneByName(ROOT_SCENE_MAP[nextScene]);
+
+		// ルートシーンクラスの取得
+		yield return StartCoroutine(FindRootScene(next));
 
 		// シーン情報を渡す
 		DisplayManager.OnSceneStart(_currentRootScene.SceneCache);
