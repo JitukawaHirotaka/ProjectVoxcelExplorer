@@ -109,6 +109,7 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 
 		if (goList.IsNullOrEmpty())
 		{
+			Debug.LogError("ルートシーンが取得できませんでした");
 			yield break;
 		}
 
