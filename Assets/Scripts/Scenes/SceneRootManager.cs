@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
+using AlstroemeriaUtility;
 
 /// <summary>
 /// ルート(メイン)シーンを管理するクラス
@@ -46,14 +47,43 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 	{
 		duringTransScene = true;
 
+		DisplayManager.OnSceneEnd();
+
+		// ディスプレイ解放待ち
+		while (DisplayManager.IsSwitching)
+			yield return null;
+
+		//TODO:シーン遷移中間処理の追加
+
 		// フェード終了まで待機
 		yield return null;
 
-		AsyncOperation ao = SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Single);
+		// ローディングディスプレイの表示
+
+		//AsyncOperation unLoad = SceneManager.UnloadSceneAsync(ROOT_SCENE_MAP[_currentViewScene]);
+
+		// 解放が完了するまで待機
+		//while (!unLoad.isDone)
+		//	yield return null;
+
+		AsyncOperation load = SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Single);
 
 		// 読み込みが完了するまで待機
-		while (ao.progress < 0.9f)
+		while (!load.isDone)
 			yield return null;
+
+		Scene next = SceneManager.GetSceneByName(ROOT_SCENE_MAP[nextScene]);
+
+		// ルートシーンクラスの取得
+		yield return StartCoroutine(FindRootScene(next));
+
+		// ローディングディスプレイを非表示に
+
+		// シーン情報を渡す
+		DisplayManager.OnSceneStart(_currentRootScene.SceneCache);
+
+		// ディスプレイの表示
+		DisplayManager.Switch(_currentRootScene.FirstUsingDisplay);
 
 		_currentViewScene = nextScene;
 		duringTransScene = false;
@@ -73,6 +103,8 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		Instance.StartCoroutine(Instance.SwitchAsync(nextScene));
 	}
 
+	private IRootScene _currentRootScene;
+
 	private void OnValidate()
 	{
 		Switch(_currentViewScene);
@@ -84,4 +116,32 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		var go = new GameObject(nameof(SceneRootManager));
 		go.AddComponent<SceneRootManager>();
 	}
+
+	private IEnumerator FindRootScene(Scene scene)
+	{
+		// ルートオブジェクト取得
+		GameObject[] goList = scene.GetRootGameObjects();
+
+		if (goList.IsNullOrEmpty())
+		{
+			Debug.LogError("ルートシーンが取得できませんでした");
+			yield break;
+		}
+
+		IRootScene root;
+
+		foreach (var go in goList)
+		{
+			root = go.GetComponent<IRootScene>();
+
+			if (root == null)
+				continue;
+
+			_currentRootScene = root;
+			yield break;
+		}
+
+		Debug.LogError("ルートシーンが取得できませんでした");
+	}
 }
+

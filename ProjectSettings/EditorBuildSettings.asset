@@ -11,3 +11,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Title.unity
     guid: ba763d622129bde4eb6a6c8625820c2d
+  - enabled: 1
+    path: Assets/Scenes/Displays/TitleDisplay.unity
+    guid: abc77da89bc6fa940ad6c4d5ad401b1f
+  - enabled: 1
+    path: Assets/Scenes/Displays/InGameDisplay.unity
+    guid: fbfc0280ed2a567489da632de6e05dae

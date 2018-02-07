@@ -22,6 +22,14 @@ public interface IRootScene
 	}
 
 	/// <summary>
+	/// シーン生成時に最初に表示されるディスプレイ
+	/// </summary>
+	DisplayManager.DisplayType FirstUsingDisplay
+	{
+		get;
+	}
+
+	/// <summary>
 	/// 画面遷移開始時実行イベント
 	/// </summary>
 	void OnSwitchBegin();
