@@ -44,7 +44,8 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 		/// </summary>
 		None,
 		Title,
-		InGame
+		InGame,
+		Load
 	}
 
 	/// <summary>
@@ -65,7 +66,8 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 	{
 		{ DisplayType.None, "None" },
 		{ DisplayType.Title, "TitleDisplay" },
-		{ DisplayType.InGame, "InGameDisplay" }
+		{ DisplayType.InGame, "InGameDisplay" },
+		{ DisplayType.Load, "LoadDisplay" }
 	};
 
 	/// <summary>
