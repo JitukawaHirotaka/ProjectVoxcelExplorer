@@ -43,7 +43,8 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 		/// ディスプレイなし
 		/// </summary>
 		None,
-		Title
+		Title,
+		InGame
 	}
 
 	/// <summary>
@@ -63,7 +64,8 @@ public class DisplayManager : SingletonMonoBehaviour<DisplayManager>
 		new Dictionary<DisplayType, string>
 	{
 		{ DisplayType.None, "None" },
-		{ DisplayType.Title, "TitleDisplay" }
+		{ DisplayType.Title, "TitleDisplay" },
+		{ DisplayType.InGame, "InGameDisplay" }
 	};
 
 	/// <summary>

@@ -1,16 +1,18 @@
-﻿/// <summary>
+﻿using UnityEngine;
+
+/// <summary>
 /// InGameScene class
 /// </summary>
 public class InGameScene : SceneBase<InGameScene>, IRootScene
 {
-	public override ISceneCache SceneCache
+	public ISceneCache SceneCache
 	{
 		get { return null; }
 	}
 
-	protected override InGameScene GetOverrideInstance()
+	public DisplayManager.DisplayType FirstUsingDisplay
 	{
-		return this;
+		get { return firstUsingDisplay; }
 	}
 
 	public void OnSwitchBegin()
@@ -22,4 +24,12 @@ public class InGameScene : SceneBase<InGameScene>, IRootScene
 	{
 		throw new System.NotImplementedException();
 	}
+
+	protected override InGameScene GetOverrideInstance()
+	{
+		return this;
+	}
+
+	[SerializeField]
+	private InGameSceneCache _cache;
 }
