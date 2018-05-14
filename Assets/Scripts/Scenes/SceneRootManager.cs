@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using UnityEngine;
 using AlstroemeriaUtility;
+using System.Linq;
 
 /// <summary>
 /// ルート(メイン)シーンを管理するクラス
@@ -22,8 +23,13 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 	/// <summary>
 	/// 現在表示しているルートシーン
 	/// </summary>
-	[SerializeField]
 	private SceneType _currentViewScene;
+
+	/// <summary>
+	/// 表示するルートシーン(インスペクタ操作用)
+	/// </summary>
+	[SerializeField]
+	private SceneType _viewScene;
 
 	/// <summary>
 	/// メインシーンタイプとシーンの紐付けマップ
@@ -55,18 +61,20 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 
 		//TODO:シーン遷移中間処理の追加
 
-		// フェード終了まで待機
+		// フェード終了まで待機(まだ考えない)
 		yield return null;
 
-		// ローディングディスプレイの表示
+		// ローディングディスプレイの表示(ルートシーンの解放のためにも必要)
 
-		//AsyncOperation unLoad = SceneManager.UnloadSceneAsync(ROOT_SCENE_MAP[_currentViewScene]);
+
+
+		AsyncOperation unLoad = SceneManager.UnloadSceneAsync(ROOT_SCENE_MAP[_currentViewScene]);
 
 		// 解放が完了するまで待機
-		//while (!unLoad.isDone)
-		//	yield return null;
+		while (!unLoad.isDone)
+			yield return null;
 
-		AsyncOperation load = SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Single);
+		AsyncOperation load = SceneManager.LoadSceneAsync(ROOT_SCENE_MAP[nextScene], LoadSceneMode.Additive);
 
 		// 読み込みが完了するまで待機
 		while (!load.isDone)
@@ -86,6 +94,7 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 		DisplayManager.Switch(_currentRootScene.FirstUsingDisplay);
 
 		_currentViewScene = nextScene;
+		_viewScene = _currentViewScene;
 		duringTransScene = false;
 	}
 
@@ -107,14 +116,22 @@ public class SceneRootManager : SingletonMonoBehaviour<SceneRootManager>
 
 	private void OnValidate()
 	{
-		Switch(_currentViewScene);
+		if (_viewScene == SceneType.None)
+			return;
+
+		Switch(_viewScene);
 	}
 
 	[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 	private static void OnEntryPoint()
 	{
 		var go = new GameObject(nameof(SceneRootManager));
-		go.AddComponent<SceneRootManager>();
+		var root = go.AddComponent<SceneRootManager>();
+		SceneType type = ROOT_SCENE_MAP
+			.First(e => e.Value == SceneManager.GetActiveScene().name).Key;
+
+		root._currentViewScene = type;
+		root._viewScene = root._currentViewScene;
 	}
 
 	private IEnumerator FindRootScene(Scene scene)
